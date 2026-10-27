@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSFiddle ocx7rdsw</title>
+
+  <style>
+    
+  </style>
+
+  
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Autoavaliação: Eu comigo e eu com o outro</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 20px; line-height: 1.6; background-color: #f9f9f9; }
+    .card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    
+    /* Estilos para alinhar o título e a imagem */
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .header-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .sub-title-curso {
+      color: #9b59b6;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    h1 { color: #2c3e50; font-size: 22px; text-align: center; margin: 0; }
+    .header-logo { width: 60px; height: auto; border-radius: 4px; }
+
+    p.instrucao { color: #555; text-align: center; margin-bottom: 25px; }
+    .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+    .question p { font-weight: bold; margin-bottom: 10px; color: #333; }
+    .options { display: flex; flex-direction: column; gap: 8px; margin-left: 10px; }
+    .options label { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #444; }
+    .options input { cursor: pointer; }
+    
+    .btn-submit { display: block; width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    .btn-submit:hover { background: #219150; }
+    
+    .btn-reset { display: block; width: 100%; padding: 12px; background: #7f8c8d; color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+    .btn-reset:hover { background: #6c7a7d; }
+
+    #result { margin-top: 25px; padding: 20px; border-radius: 8px; display: none; background: #eef9f1; border: 1px solid #c3e6cb; }
+    .disclaimer { font-size: 13px; color: #666; margin-top: 15px; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header-container">
+    <div class="header-text-group">
+      <span class="sub-title-curso">PEDAGOGIA - UNIGOIÁS</span>
+      <h1>Autoavaliação: Eu comigo e eu com o outro</h1>
+    </div>
+    <img src="https://scontent.cdninstagram.com/v/t51.2885-19/453787876_1020227252740876_7537976432563980711_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=103&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy44MDIuQzMifQ%3D%3D&_nc_ohc=F6IJFwESHDEQ7kNvwFK_IBs&_nc_oc=Adp-KFz1jWpZ_9iLloiiqHGbBKH4ypVtmhbKN9PeeSg3kNhhwk9UXHCd8dvtGqB5k04&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_ss=7b689&oh=00_AQNLP4vpldvoHDrAavbfsYz_Stnb5fxTboLEC_xZqcWgbg&oe=6AE68492" alt="logo coruja" class="header-logo">
+  </div>
+  <p class="instrucao"><strong>Orientação:</strong> Leia cada questão e selecione a opção que melhor reflete a sua realidade.</p>
+
+  <form id="quizForm">
+    <div id="questionsContainer"></div>
+    <button type="button" class="btn-submit" onclick="calcularResultado()">Ver Resultado</button>
+  </form>
+
+  <div id="result">
+    <div id="resultText"></div>
+    <button type="button" class="btn-reset" onclick="recomecarQuiz()">RECOMEÇAR</button>
+  </div>
+</div>
+
+<script>
+const perguntas = [
+  "Consigo perceber como minhas atitudes influenciam minha relação comigo mesma e com as outras pessoas?",
+  "Dedico tempo para cuidar do meu autoconhecimento e também para melhorar minha convivência com os outros?",
+  "Consigo reconhecer os pensamentos, sentimentos, valores e crenças que influenciam minhas atitudes?",
+  "Consigo identificar minhas qualidades, limitações, necessidades e desejos?",
+  "Consigo reconhecer minhas emoções e expressá-las de maneira respeitosa?",
+  "Procuro ouvir verdadeiramente antes de responder ou julgar o que a outra pessoa está dizendo?",
+  "Diante de um conflito, procuro compreender o que está acontecendo antes de reagir impulsivamente?",
+  "Demonstro empatia, respeito, cooperação e capacidade de dialogar com pessoas que pensam diferente de mim?",
+  "Contribuo para construir um ambiente de trabalho acolhedor, respeitoso e colaborativo?",
+  "Procuro aprender com minhas experiências e utilizá-las para crescer pessoal e profissionalmente?",
+  "Quando enfrento uma dificuldade, consigo perguntar a mim mesma: “Como estou me relacionando comigo e com o outro?”",
+  "Reconheço que cuidar da minha relação comigo mesma contribui para construir relações mais saudáveis com os outros?"
+];
+
+const rotulosRespostas = [
+  "1 – Nunca",
+  "2 – Raramente",
+  "3 – Às vezes",
+  "4 – Frequentemente",
+  "5 – Sempre"
+];
+
+const container = document.getElementById('questionsContainer');
+
+perguntas.forEach((q, index) => {
+  const qNum = index + 1;
+  let html = `<div class="question"><p>${qNum}. ${q}</p><div class="options">`;
+  
+  for (let i = 1; i <= 5; i++) {
+    html += `<label><input type="radio" name="q${qNum}" value="${i}" required> ${rotulosRespostas[i-1]}</label>`;
+  }
+  
+  html += `</div></div>`;
+  container.innerHTML += html;
+});
+
+function calcularResultado() {
+  let total = 0;
+  let respondidas = 0;
+
+  for (let i = 1; i <= 12; i++) {
+    const radios = document.getElementsByName(`q${i}`);
+    for (const r of radios) {
+      if (r.checked) {
+        total += parseInt(r.value);
+        respondidas++;
+        break;
+      }
+    }
+  }
+
+  if (respondidas < 12) {
+    alert("Por favor, responda a todas as 12 questões antes de ver o resultado.");
+    return;
+  }
+
+  let reflexao = "";
+  if (total >= 12 && total <= 24) {
+    reflexao = "🌱 <strong>Momento de despertar:</strong> há aspectos importantes de autoconhecimento e relacionamento que podem ser desenvolvidos.";
+  } else if (total >= 25 && total <= 36) {
+    reflexao = "🌿 <strong>Em construção:</strong> você já reconhece vários aspectos importantes, mas ainda existem oportunidades de aprimoramento.";
+  } else if (total >= 37 && total <= 48) {
+    reflexao = "🌸 <strong>Desenvolvimento consciente:</strong> demonstra boa percepção sobre si e sobre suas relações, mantendo espaço para continuar aprendendo.";
+  } else if (total >= 49 && total <= 60) {
+    reflexao = "🌻 <strong>Consciência ampliada:</strong> apresenta forte percepção sobre si, sobre o outro e sobre a importância do diálogo e da convivência.";
+  }
+
+  const resultDiv = document.getElementById('result');
+  const resultText = document.getElementById('resultText');
+  
+  resultText.innerHTML = `
+    <h2>Sua Pontuação Total: ${total} pontos</h2>
+    <p>${reflexao}</p>
+    <p class="disclaimer"><strong>Importante:</strong> a pontuação não representa uma avaliação de “certo” ou “errado”. Ela funciona como um espelho para a reflexão pessoal.</p>
+  `;
+  
+  resultDiv.style.display = 'block';
+  resultDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+function recomecarQuiz() {
+  document.getElementById('quizForm').reset();
+  document.getElementById('result').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
+
+
+  <script>
+    
+  </script>
+</body>
+</html>
